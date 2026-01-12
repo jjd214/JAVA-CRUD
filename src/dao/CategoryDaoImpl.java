@@ -93,7 +93,15 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public void delete(int id) {
-
+        String sql = "delete from categories where id = ?";
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Category deleted.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private Category mapRow(ResultSet rs) throws Exception {

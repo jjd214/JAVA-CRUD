@@ -3,10 +3,7 @@ package dao;
 import db.DBConnection;
 import model.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProductDaoImpl implements ProductDao {
@@ -68,16 +65,48 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void update(Product product) {
+        String sql = """
+                update products set category_id = ?, name = ?, price = ?, in_stock = ?   
+                where id = ?
+                """;
 
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,product.getCategory_id());
+            ps.setString(2, product.getName());
+            ps.setDouble(3,product.getPrice());
+            ps.setInt(4,product.getStock());
+            ps.setInt(5,product.getId());
+
+            ps.executeUpdate();
+            System.out.println("Product updated.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
     public void delete(int id) {
+        String sql = "delete from products where id = ?";
+        try (Connection conn = DBConnection.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,id);
 
+            int res = ps.executeUpdate();
+
+            if (res > 0)
+                System.out.println("Product deleted.");
+            else
+                System.out.println("Something went wrong.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public Product mapRow(ResultSet rs) throws Exception {
         Product product = new Product();
+        product.setId(rs.getInt("id"));
         product.setCategory_id(rs.getInt("category_id"));
         product.setName(rs.getString("name"));
         product.setPrice(rs.getDouble("price"));

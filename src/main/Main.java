@@ -20,10 +20,21 @@ public class Main {
                 .setName("Gatorade")
                 .setPrice(200)
                 .setStock(10);
-
+//        Create
 //        productDao.create(product);
 
-        var productDetails = productDao.find(7);
+//        Read
+        var productDetails = productDao.find(13);
+        System.out.format("CATEGORY ID: %d - NAME: %s - PRICE: %f - STOCK: %d \n",
+
+                productDetails.getCategory_id(),
+                productDetails.getName(),
+                productDetails.getPrice(),
+                productDetails.getStock());
+
+        productDetails.setStock(25);
+        productDao.update(productDetails);
+
         System.out.format("CATEGORY ID: %d - NAME: %s - PRICE: %f - STOCK: %d \n",
 
                 productDetails.getCategory_id(),
@@ -41,12 +52,11 @@ public class Main {
                             p.getPrice(),
                             p.getStock());
                 });
-        var updateProd = new Category()
-                .setId(6)
-                .setName("Breakfast")
-                .setDescription("TEST DESCRIPTION");
 
-        categoryDao.update(updateProd);
+        productDao.delete(11);
+        productDao.delete(12);
+        productDao.delete(10);
+        productDao.delete(9);
 
         var category = new Category()
                 .setName("Soft drinks")
@@ -69,5 +79,13 @@ public class Main {
                 });
 
 
+        //        Update
+        var updateCategory = new Category()
+                .setId(6)
+                .setName("Breakfast")
+                .setDescription("TEST DESCRIPTION");
+
+        categoryDao.update(updateCategory);
+        categoryDao.delete(updateCategory.getId());
     }
 }

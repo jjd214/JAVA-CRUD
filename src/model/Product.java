@@ -1,11 +1,21 @@
 package model;
 
 public class Product {
+    private int id;
     private int category_id;
     private String category_name;
     private String name;
     private double price;
     private int stock;
+
+    public int getId() {
+        return id;
+    }
+
+    public Product setId(int id) {
+        this.id = id;
+        return this;
+    }
 
     public int getCategory_id() {
         return category_id;
